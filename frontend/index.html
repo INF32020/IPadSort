@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<title>iPad-Ausleihe</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel=stylesheet type="text/css" href="styles.css">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	</head>
+	<body>
+		<div class="container">
+			<div class="table-wrapper">
+				<div class="table-title">
+					<div class="row">
+						<div class="col-sm-6">
+							<h2>Geräte verwalten</h2>
+						</div>
+						<div class="col-sm-6">
+							<a href="#addDevice" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Neues Gerät hinzufügen</span></a>
+							<a href="#deleteDevice" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Löschen</span></a>
+						</div>
+					</div>
+				</div>
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>
+									<span class="custom-checkbox">
+										<input type="checkbox" id="selectAll">
+										<label for="selectAll"></label>
+									</span>
+								</th>
+								<th>Geräte-ID</th>
+								<th>Aktueller Nutzer</th>
+								<th>Modell</th>
+								<th>Leihstatus</th>
+								<th>Hinweis</th>
+								<th>Rückgabefrist</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<span class="custom-checkbox">
+										<input type="checkbox" id="checkbox1" name="options[]" value="1">
+										<label for="checkbox1"></label>
+									</span>
+								</td>
+								@foreach ($device as $device)
+								<td>{{$device->id}}</td>
+								<td>{{$device->user}}</td>
+								<td>{{$device->model}}</td>
+								<td>{{$device->isBorrowed}}</td>
+								<td>{{$device->remark}} </td>
+								<td>{{$device->dueDate}} </td>
+								@endofforeach
+								<td>
+									<a href="#editDevice" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Bearbeiten">&#xE254;</i></a>
+									<a href="#deleteDevice" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Löschen">&#xE872;</i></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="clearfix">
+						// $cnt = SELECT COUNT(id) FROM *
+						<div class="hint-text">Zeige <b>1</b> von <b>{{$cnt}}</b> Einträgen</div>
+						<ul class="pagination">
+							<li class="page-item disabled"><a href="#">Vorherige Seite</a></li>
+								@foreach($cnt2 as $cnt2)
+								<li class="page-item"><a href="#" class="page-link">1</a></li>
+								@endofforeach
+							<li class="page-item"><a href="#" class="page-link">Nächste Seite</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div id="addDevice" class="modal fade">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<form>
+							<div class="modal-header">
+								<h4 class="modal-title">Gerät hinzufügen</h4>
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label>Geräte-ID</label>
+									<input type="text" class="form-control" required>
+								</div>
+								<div class="form-group">
+									<label>Aktueller Nutzer</label>
+									<input type="text" class="form-control" required>
+								</div>
+								<div class="form-group">
+									<label>Modell</label>
+									<input type="text" class="form-control" required>
+								</div>
+								<div class="form-group">
+									<label><h6>Geliehen:</h6> </label>
+									<input type="checkbox" required>
+								</div>
+								<div class="form-group">
+									<label>Hinweis (optional)</label>
+									<input type="text" class="form-control">
+								</div>
+								<div class="form-group">
+									<label>Rückgabefrist</label>
+									<input type="text" class="form-control" required>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<input type="button" class="btn btn-default" data-dismiss="modal" value="Abbrechen">
+								<input type="submit" class="btn btn-success" value="Hinzufügen">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</body>
+</html>
